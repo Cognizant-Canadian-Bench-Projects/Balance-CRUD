@@ -14,19 +14,32 @@ public class BalanceService {
     @Autowired
     BalanceRepository balanceRepository;
 
-    public Balance findByProductId(int productId){
-        Balance balance = balanceRepository.findByProductId(productId);
-        if(balance == null){
-            throw new EntityNotFoundException("Product Id = " + productId + " not found");
+    public Balance findByProductId(String productId){
+        try{
+            int intProductId = Integer. parseInt(productId);
+            Balance balance = balanceRepository.findByProductId(intProductId);
+            if(balance == null){
+                throw new EntityNotFoundException("Product Id = " + productId + " not found");
+            }
+            return balance;
+        }catch(NumberFormatException e){
+            throw new IllegalArgumentException("Product id is illegal");
         }
-        return balance;
+
     }
 
-    public Balance findByProductIdAndLocationId(int productId, int locationId){
-        Balance balance = balanceRepository.findByProductIdAndLocationId(productId, locationId);
-        if(balance == null){
-            throw new EntityNotFoundException("Invalid product id or location id");
+    public Balance findByProductIdAndLocationId(String productId, String locationId){
+        try{
+        int intProductId = Integer. parseInt(productId);
+        int intLocationId = Integer. parseInt(locationId);
+            Balance balance = balanceRepository.findByProductIdAndLocationId(intProductId, intLocationId);
+            if(balance == null){
+                throw new EntityNotFoundException("Invalid product id or location id");
+            }
+            return balance;
+        }catch(NumberFormatException e){
+            throw new IllegalArgumentException("Product id or location id is illegal");
         }
-        return balance;
+
     }
 }
