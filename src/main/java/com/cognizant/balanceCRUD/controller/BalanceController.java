@@ -19,17 +19,18 @@ public class BalanceController {
     BalanceService balanceService;
 
     @GetMapping("/balance")
-    public ResponseEntity<?> getBalance(@RequestParam int productId, @RequestParam int locationId){
+    public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam String locationId){
+
         Balance balance = new Balance();
         try{
-            if(locationId==0){
+            if(locationId==""){
                 balance = balanceService.findByProductId(productId);
             }
             else {
                 balance = balanceService.findByProductIdAndLocationId(productId, locationId);
             }
             return ResponseEntity.ok(balance);
-        }catch(EntityNotFoundException e){
+        }catch(EntityNotFoundException | IllegalArgumentException e){
             return  ResponseEntity.status(404).body(e.getMessage());
         }
     }
