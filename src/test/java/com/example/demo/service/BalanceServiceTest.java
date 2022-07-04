@@ -41,28 +41,51 @@ public class BalanceServiceTest {
     @Test
     void findByProductId_Positive(){
         when(balanceRepository.findByProductId(2)).thenReturn(balance1);
-        Balance actual=balanceService.findByProductId(2);
+        Balance actual=balanceService.findByProductId("2");
         assertThat(actual).isEqualTo(balance1);
     }
 
     @Test
     void findByProductId_Negative() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            balanceService.findByProductId(0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            balanceService.findByProductId(" ");
         });
     }
 
     @Test
     void findByProductIdAndLocationId_Positive(){
         when(balanceRepository.findByProductIdAndLocationId(2,3)).thenReturn(balance1);
-        Balance actual=balanceService.findByProductIdAndLocationId(2,3);
+        Balance actual=balanceService.findByProductIdAndLocationId("2","3");
         assertThat(actual).isEqualTo(balance1);
     }
 
     @Test
     void findByProductIdAndLocationId_Negative() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            balanceService.findByProductId(0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            balanceService.findByProductId(" ");
         });
     }
-}
+
+    @Test
+    void findByProductIdAndLocationIdNotFound_Negative(){
+        when(balanceRepository.findByProductIdAndLocationId(2,3)).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            Balance actual=balanceService.findByProductIdAndLocationId("2","3");
+        });
+        }
+
+    @Test
+    void findByProductIdAndLocationIdNumberFormat_Negative(){
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Balance actual=balanceService.findByProductIdAndLocationId("a","b");
+        });
+    }
+
+    @Test
+    void findByProductIdNotFound_Negative(){
+        when(balanceRepository.findByProductId(2)).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            Balance actual=balanceService.findByProductId("2");
+        });
+    }
+    }
