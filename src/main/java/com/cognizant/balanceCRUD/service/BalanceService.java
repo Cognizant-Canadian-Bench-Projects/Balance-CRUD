@@ -26,6 +26,7 @@ public class BalanceService {
             throw new IllegalArgumentException("Product id is illegal");
         }
 
+        
     }
 
     public Balance findByProductIdAndLocationId(String productId, String locationId){
