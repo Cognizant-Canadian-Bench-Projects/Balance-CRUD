@@ -50,7 +50,7 @@ pipeline {
 
     post {
         success {
-             mergePullRequest()
+             echo 'Build completed successfully'
         }
         failure {
             commentPullRequest("[Failing Build](${env.BUILD_URL})")
