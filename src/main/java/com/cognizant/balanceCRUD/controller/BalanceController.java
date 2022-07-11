@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(originPatterns = "*", exposedHeaders = "*",allowedHeaders = "*")
@@ -21,17 +22,22 @@ public class BalanceController {
     @GetMapping("/balance")
     public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam String locationId){
 
-        Balance balance = new Balance();
         try{
             if(locationId==""){
-                balance = balanceService.findByProductId(productId);
+                List<Balance> balanceList = balanceService.findByProductId(productId);
+                return ResponseEntity.ok(balanceList);
             }
             else {
-                balance = balanceService.findByProductIdAndLocationId(productId, locationId);
+               Balance  balance = balanceService.findByProductIdAndLocationId(productId, locationId);
+                return ResponseEntity.ok(balance);
             }
-            return ResponseEntity.ok(balance);
-        }catch(EntityNotFoundException | IllegalArgumentException e){
+
+        }catch(EntityNotFoundException e){
             return  ResponseEntity.status(404).body(e.getMessage());
+        }
+
+        catch(IllegalArgumentException e){
+            return  ResponseEntity.status(400).body(e.getMessage());
         }
     }
 }

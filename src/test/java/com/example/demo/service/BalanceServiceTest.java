@@ -13,6 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +34,7 @@ public class BalanceServiceTest {
     Balance balance4;
 
     @BeforeEach
-    public void init(){
+    void init(){
         balance1 = new Balance(1,2,3,123);
         balance2 = new Balance(2,3,4,234);
         balance3 = new Balance(3,4,5,345);
@@ -40,9 +43,12 @@ public class BalanceServiceTest {
 
     @Test
     void findByProductId_Positive(){
-        when(balanceRepository.findByProductId(2)).thenReturn(balance1);
-        Balance actual=balanceService.findByProductId("2");
-        assertThat(actual).isEqualTo(balance1);
+        List<Balance> balanceList = new ArrayList<>();
+        balanceList.add(balance1);
+        balanceList.add(balance2);
+        when(balanceRepository.findByProductId(2)).thenReturn(balanceList);
+        List<Balance> actual=balanceService.findByProductId("2");
+        assertThat(actual).isEqualTo(balanceList);
     }
 
     @Test
@@ -83,9 +89,8 @@ public class BalanceServiceTest {
 
     @Test
     void findByProductIdNotFound_Negative(){
-        when(balanceRepository.findByProductId(2)).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            Balance actual=balanceService.findByProductId("2");
+            balanceService.findByProductId("2");
         });
     }
     }
