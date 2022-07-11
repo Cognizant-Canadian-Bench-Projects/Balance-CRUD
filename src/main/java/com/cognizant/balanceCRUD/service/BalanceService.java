@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class BalanceService {
@@ -14,19 +15,19 @@ public class BalanceService {
     @Autowired
     BalanceRepository balanceRepository;
 
-    public Balance findByProductId(String productId){
+    public List<Balance> findByProductId(String productId){
         try{
             int intProductId = Integer. parseInt(productId);
-            Balance balance = balanceRepository.findByProductId(intProductId);
-            if(balance == null){
+            List<Balance> balanceList = balanceRepository.findByProductId(intProductId);
+            if(balanceList.isEmpty()){
                 throw new EntityNotFoundException("Product Id = " + productId + " not found");
             }
-            return balance;
+            return balanceList;
         }catch(NumberFormatException e){
             throw new IllegalArgumentException("Product id is illegal");
         }
 
-        
+
     }
 
     public Balance findByProductIdAndLocationId(String productId, String locationId){
