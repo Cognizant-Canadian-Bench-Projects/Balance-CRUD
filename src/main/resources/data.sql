@@ -1,5 +1,6 @@
 INSERT INTO balance(product_id,location_id,quantity)
 VALUES(1,1,200),
+(1,2,300),
 (2,2,300),
 (3,3,400),
 (4,4,500),

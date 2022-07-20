@@ -20,10 +20,10 @@ public class BalanceController {
     BalanceService balanceService;
 
     @GetMapping("/balance")
-    public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam String locationId){
+    public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam(required = false) String locationId){
 
         try{
-            if(locationId==""){
+            if( locationId == null || locationId.equals("")){
                 List<Balance> balanceList = balanceService.findByProductId(productId);
                 return ResponseEntity.ok(balanceList);
             }
