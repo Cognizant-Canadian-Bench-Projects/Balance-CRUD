@@ -35,9 +35,13 @@ public class BalanceController {
         }catch(EntityNotFoundException e){
             return  ResponseEntity.status(404).body(e.getMessage());
         }
-
         catch(IllegalArgumentException e){
             return  ResponseEntity.status(400).body(e.getMessage());
         }
     }
+
+//    @GetMapping("/balance")
+//    public ResponseEntity<?> getAllBalance(){
+//        return ResponseEntity.ok(balanceService.getAllBalance());
+//    }
 }

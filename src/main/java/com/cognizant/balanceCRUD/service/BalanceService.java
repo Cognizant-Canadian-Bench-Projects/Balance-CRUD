@@ -15,6 +15,9 @@ public class BalanceService {
     @Autowired
     BalanceRepository balanceRepository;
 
+    public List<Balance> getAllBalance(){
+        return balanceRepository.findAll();
+    }
     public List<Balance> findByProductId(String productId){
         try{
             int intProductId = Integer. parseInt(productId);
@@ -26,8 +29,6 @@ public class BalanceService {
         }catch(NumberFormatException e){
             throw new IllegalArgumentException("Product id is illegal");
         }
-
-
     }
 
     public Balance findByProductIdAndLocationId(String productId, String locationId){
