@@ -3,6 +3,7 @@ package com.cognizant.balanceCRUD.controller;
 import com.cognizant.balanceCRUD.models.Balance;
 import com.cognizant.balanceCRUD.service.BalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class BalanceController {
     BalanceService balanceService;
 
     @GetMapping("/balance")
+    @Cacheable(value="balance", key="#productId")
     public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam(required = false) String locationId){
 
         try{
