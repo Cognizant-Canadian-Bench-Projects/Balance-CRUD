@@ -14,31 +14,29 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(originPatterns = "*", exposedHeaders = "*",allowedHeaders = "*")
+@CrossOrigin(originPatterns = "*", exposedHeaders = "*", allowedHeaders = "*")
 public class BalanceController {
 
     @Autowired
     BalanceService balanceService;
 
     @GetMapping("/balance")
-    @Cacheable(value="balance", key="#productId")
-    public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam(required = false) String locationId){
+    @Cacheable(value = "balance", key = "#productId")
+    public ResponseEntity<?> getBalance(@RequestParam String productId, @RequestParam(required = false) String locationId) {
 
-        try{
-            if( locationId == null || locationId.equals("")){
+        try {
+            if (locationId == null || locationId.equals("")) {
                 List<Balance> balanceList = balanceService.findByProductId(productId);
                 return ResponseEntity.ok(balanceList);
-            }
-            else {
-               Balance  balance = balanceService.findByProductIdAndLocationId(productId, locationId);
+            } else {
+                Balance balance = balanceService.findByProductIdAndLocationId(productId, locationId);
                 return ResponseEntity.ok(balance);
             }
 
-        }catch(EntityNotFoundException e){
-            return  ResponseEntity.status(404).body(e.getMessage());
-        }
-        catch(IllegalArgumentException e){
-            return  ResponseEntity.status(400).body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
